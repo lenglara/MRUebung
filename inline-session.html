@@ -119,14 +119,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         });
 
         arButton = new WebXRButton({
-              onRequestSession: onRequestSessionNeu,
-              onEndSession: onEndSession,
-              textEnterXRTitle: "START AR",
-              textXRNotFoundTitle: "AR NOT FOUND",
-             textExitXRTitle: "EXIT  AR",
+          onRequestSession: onRequestSessionNeu,
+          onEndSession: onEndSession,
+          textEnterXRTitle: "START AR",
+          textXRNotFoundTitle: "AR NOT FOUND",
+          textExitXRTitle: "EXIT  AR",
         });
-
-        arStartedNeu = false;
 
         document.querySelector('header').appendChild(xrButton.domElement);
         document.querySelector('header').appendChild(arButton.domElement);
@@ -156,20 +154,21 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           // Set a flag on the session so we can differentiate it from the
           // inline session.
           session.isImmersive = true;
+          arStartedNeu = false;
           onSessionStarted(session);
         });
       }
 
       function onRequestSessionNeu() {
-            return navigator.xr.requestSession('immersive-ar').then((session) => {
-                arButton.setSession(session);
-               // Set a flag on the session so we can differentiate it from the
-               // inline session.
-               session.isImmersive = true;
-               arStartedNeu = true;
-               onSessionStarted(session);
-           });
-        }
+        return navigator.xr.requestSession('immersive-ar').then((session) => {
+            arButton.setSession(session);
+            // Set a flag on the session so we can differentiate it from the
+            // inline session.
+            session.isImmersive = true;
+            arStartedNeu = true;
+            onSessionStarted(session);
+        });
+      }
 
       function onSessionStarted(session) {
         session.addEventListener('end', onSessionEnded);
@@ -227,7 +226,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                 xrImmersiveRefSpace = xrImmersiveRefSpace.getOffsetReferenceSpace(evt.transform);
               }
             });
-            
+
           } else {
             xrInlineRefSpace = refSpace;
           }
@@ -244,7 +243,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         if (event.session.isImmersive) {
           xrButton.setSession(null);
           arButton.setSession(null);
-          arStartedNeu = false; 
+          // arStartedNeu = false; 
         }
       }
 
@@ -260,12 +259,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         // calculating the viewer pose for inline sessions.
         if (!session.isImmersive) {
           refSpace = getAdjustedRefSpace(refSpace);
+        }
 
-          if (session.isImmersive && arStartedNeu) {
+        if (session.isImmersive && arStartedNeu) {
           // When in 'immersive-ar' mode don't draw an opaque background because
           // we want the real world to show through.
           skybox.visible = false;
-        }
         }
 
         let pose = frame.getViewerPose(refSpace);
