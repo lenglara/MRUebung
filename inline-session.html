@@ -143,7 +143,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           });
 
           navigator.xr.isSessionSupported('immersive-ar').then((supported) => {
-                arButton.enabled = supported;
+            arButton.enabled = supported;
           });
 
           // Start up an inline session, which should always be supported on
@@ -170,7 +170,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
       function onRequestSessionNeu() {
             return navigator.xr.requestSession('immersive-ar').then((session) => {
-                xrButtonNeu.setSession(session);
+                arButton.setSession(session);
                // Set a flag on the session so we can differentiate it from the
                // inline session.
                session.isImmersive = true;
