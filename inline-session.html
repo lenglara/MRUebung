@@ -126,6 +126,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
              textExitXRTitle: "EXIT  AR",
         });
 
+        arStartedNeu = false;
+
         document.querySelector('header').appendChild(xrButton.domElement);
         document.querySelector('header').appendChild(arButton.domElement);
 
@@ -165,8 +167,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
           onSessionStarted(session);
         });
       }
-
-      arStartedNeu = false;
 
       function onRequestSessionNeu() {
             return navigator.xr.requestSession('immersive-ar').then((session) => {
@@ -242,6 +242,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         // Only reset the button when the immersive session ends.
         if (event.session.isImmersive) {
           xrButton.setSession(null);
+          arButton.setSession(null);
+          arStartedNeu = false; 
         }
       }
 
@@ -257,12 +259,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         // calculating the viewer pose for inline sessions.
         if (!session.isImmersive) {
           refSpace = getAdjustedRefSpace(refSpace);
-        }
 
-        if (session.isImmersive && arStartedNeu) {
+          if (session.isImmersive && arStartedNeu) {
           // When in 'immersive-ar' mode don't draw an opaque background because
           // we want the real world to show through.
           skybox.visible = false;
+        }
         }
 
         let pose = frame.getViewerPose(refSpace);
